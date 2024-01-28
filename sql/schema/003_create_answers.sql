@@ -1,0 +1,15 @@
+-- +goose Up
+CREATE TABLE answers (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  body VARCHAR(300) NOT NULL,
+  votes INT NOT NULL DEFAULT 0,
+  question_id INT NOT NULL,
+  user_id INT NOT NULL,
+  created_at DATETIME NOT NULL,
+  updated_at DATETIME NOT NULL,
+  FOREIGN KEY(question_id) REFERENCES questions(id) ON UPDATE CASCADE ON DELETE CASCADE,
+  FOREIGN KEY(user_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+-- +goose Down
+DROP TABLE answers;

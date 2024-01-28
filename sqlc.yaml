@@ -1,0 +1,11 @@
+version: "2"
+
+sql:
+- schema: "sql/schema"
+  queries: "sql/queries"
+  engine: "mysql"
+  gen:
+    go:
+      package: "database"
+      out: "internal/database"
+      emit_prepared_queries: true
