@@ -14,7 +14,8 @@ import (
 	"github.com/vuezy/go-ask-and-answer/internal/utils"
 )
 
-var questionMutex sync.Mutex
+var saveQuestionMutex sync.Mutex
+var closeQuestionMutex sync.Mutex
 
 func GetQuestions(w http.ResponseWriter, r *http.Request) {
 	db := database.GetDB()
@@ -92,8 +93,8 @@ func GetQuestionById(w http.ResponseWriter, r *http.Request) {
 }
 
 func CreateQuestion(w http.ResponseWriter, r *http.Request) {
-	questionMutex.Lock()
-	defer questionMutex.Unlock()
+	saveQuestionMutex.Lock()
+	defer saveQuestionMutex.Unlock()
 
 	db := database.GetDB()
 	ctx := r.Context()
@@ -175,8 +176,8 @@ func CreateQuestion(w http.ResponseWriter, r *http.Request) {
 }
 
 func UpdateQuestion(w http.ResponseWriter, r *http.Request) {
-	questionMutex.Lock()
-	defer questionMutex.Unlock()
+	saveQuestionMutex.Lock()
+	defer saveQuestionMutex.Unlock()
 
 	db := database.GetDB()
 	ctx := r.Context()
@@ -311,6 +312,9 @@ func DeleteQuestion(w http.ResponseWriter, r *http.Request) {
 }
 
 func CloseQuestion(w http.ResponseWriter, r *http.Request) {
+	closeQuestionMutex.Lock()
+	defer closeQuestionMutex.Unlock()
+
 	db := database.GetDB()
 	ctx := r.Context()
 	userId := utils.GetTokenSubject(ctx)
